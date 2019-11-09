@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div id="app">
+    <button @click="getData">串行方式点击请求服务</button>
+    <p>成功返回结果：{{result}}</p>
+    <p>失败返回结果：{{message}}</p>
+</div>
+<script type="text/javascript" src="vue/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                result: "",
+                message: "",
+                loading: ""
+            }
+        },
+        methods: {
+            getData() {
+                // 正常请求3个接口
+                this.loading = true;
+                this.server1("server1", result1 => {
+                    this.server2(result1, result2 => {
+                        this.server3(result2, result3 => {
+                            this.result = result3;
+                            this.loading = false;
+                        }, error3 => {
+                            console.log(error3);
+                            this.loading = false;
+                        });
+                    }, error2 => {
+                        console.log(error2);
+                        this.loading = false;
+                    });
+                }, error1 => {
+                    console.log(error1);
+                    this.loading = false;
+                });
+            },
+            server1(params, success, error) {
+                if (params) {
+                    success("result1");
+                } else {
+                    error("error1");
+                }
+            },
+            server2(params, success, error) {
+                // 第二个接口的入参是第一个接口的返回值
+                if (params === "result1") {
+                    success("result2");
+                } else {
+                    error("error2");
+                }
+            },
+            server3(params, success, error) {
+                // 第三个接口的入参是第二个接口的返回值
+                if (params === "result2") {
+                    success("所有接口请求完毕.");
+                } else {
+                    error("error3");
+                }
+            },
+        }
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div id="app">
+    <button @click="getData">闭包方式点击请求服务</button>
+    <p>成功返回结果：{{result}}</p>
+    <p>失败返回结果：{{message}}</p>
+</div>
+<script type="text/javascript" src="vue/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                result: "",
+                message: "",
+                loading: ""
+            }
+        },
+        methods: {
+            getData() {
+                this.loading = true;
+                let fn = this.request(3, result => {
+                    this.result = result;
+                    this.loading = false;
+                }, error => {
+                    this.message = error;
+                    this.loading = false;
+                });
+                this.server1("server1", fn);
+                this.server2("result1", fn);
+                this.server3("result2", fn);
+            },
+            // 以下为封装函数
+            request(times, success, error) {
+                let result = {};
+                let message = {};
+                return function (key, value) {
+                    if (key.indexOf("result") !== -1) { // 处理成功逻辑，必须所有请求都成功才调用成功回调函数
+                        result[key] = value;
+                        if (--times === 0) {
+                            success(result);
+                        }
+                    } else { // 统一处理错误逻辑，只要有一个调用失败，就走错误回调
+                        message[key] = value;
+                        error(message);
+                    }
+                }
+            },
+            server1(params, fn) {
+                if (params) {
+                    fn("result1", "result1");
+                } else {
+                    fn("error1", "error1");
+                }
+            },
+            server2(params, fn) {
+                // 第二个接口的入参是第一个接口的返回值
+                if (params === "result1") {
+                    fn("result2", "result2");
+                } else {
+                    fn("error2", "error2");
+                }
+            },
+            server3(params, fn) {
+                // 第三个接口的入参是第二个接口的返回值
+                if (params === "result2") {
+                    fn("result3", "所有接口请求完毕");
+                } else {
+                    fn("error3", "error3");
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

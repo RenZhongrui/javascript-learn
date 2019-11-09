@@ -38,8 +38,8 @@
             },
             // 以下为封装函数
             request(times, success, error) {
-                let result = {};
-                let message = {};
+                let result = {}; // 成功返回值
+                let message = {}; // 错误返回值
                 return function (key, value) {
                     if (key.indexOf("result") !== -1) { // 处理成功逻辑，必须所有请求都成功才调用成功回调函数
                         result[key] = value;

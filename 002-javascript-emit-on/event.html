@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div id="app">
+    <button @click="getData">闭包方式点击请求服务</button>
+    <p>成功返回结果：{{result}}</p>
+    <p>请求失败：{{message}}</p>
+</div>
+<script type="text/javascript" src="vue/vue.js"></script>
+<script type="text/javascript">
+    class Event {
+        constructor() {
+            this._arr = [];
+        }
+
+        // 监听每一个订阅者，并触发on函数
+        on(fn) {
+            this._arr.push(fn);
+        }
+
+        // 订阅，遍历数组中的函数并执行每一个函数
+        emit(result) {
+            this._arr.forEach(fn => fn(result));
+        }
+    }
+
+    let event = new Event();
+    let vue = new Vue({
+        el: '#app',
+        data() {
+            return {
+                result: "",
+                message: "",
+                loading: "",
+                success: {}
+            }
+        },
+        methods: {
+            getData() {
+                this.loading = true;
+                event.on((result) => {
+                    if (Object.keys(this.success).length === 3) {
+                        this.result = "所有的请求都成功";
+                    }
+                })
+                this.server1("server1", event);
+                this.server2("result2", event);
+                this.server3("result3", event);
+            },
+            // 以下为封装函数
+            server1(params, event) {
+                this.success.result1 = "result1";
+                event.emit("result1");
+            },
+            server2(params, event) {
+                this.success.result2 = "result2";
+                event.emit();
+            },
+            server3(params, event) {
+                this.success.result3 = "result3";
+                event.emit();
+            },
+        }
+    });
+</script>
+</body>
+</html>

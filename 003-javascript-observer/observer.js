@@ -5,7 +5,8 @@
  * 观察者和被观察者之间是有关系的，需要将观察者绑定到被观察者上，
  * 当被观察者状态改变了，会通知观察者更新被观察者的状态
  * 示例：
- * 创建多个天气观察员
+ * 创建多个天气观察员，
+ * 当天气发生变化的时候，会通知所有的观察员当前的天气情况
  *
  */
 
@@ -17,8 +18,7 @@ class Watcher {
     }
 
     update(newState) {
-        console.log("播报员：" + this.name);
-        console.log("今天天气：" + newState);
+        notice(this.name, newState);
     }
 }
 
@@ -40,9 +40,16 @@ class Weather {
         this._arr.forEach(o => o.update(newState));
     }
 }
+
 let watcher1 = new Watcher("一号天气观察员");
 let watcher2 = new Watcher("二号天气观察员");
 let weather = new Weather();
 weather.attach(watcher1);
 weather.attach(watcher2);
 weather.setState("下雨");
+
+// 预报天气情况
+function notice(watcher, weather) {
+    console.log("播报员：" + watcher);
+    console.log("今天天气：" + weather);
+}

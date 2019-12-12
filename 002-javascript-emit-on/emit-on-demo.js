@@ -14,19 +14,23 @@ let event = {
         this._arr.forEach(fn => fn(result));
     }
 }
+let res = {};
 // 所有emit订阅的函数都会触发on方法
 event.on(function (result) {
     console.log(result)
-    console.log("event.on")
+    if (Object.keys(res).length === 2) {
+        console.log("请求完成")
+    }
 })
 
 fs.readFile(path.join(__dirname, 'name.txt'), "utf8", function (error, data) {
+    res.name = data;
     event.emit(data);
 })
 
 fs.readFile(path.join(__dirname, 'age.txt'), "utf8", function (error, data) {
+    res.age = data;
     event.emit(data);
 })
-
 
 

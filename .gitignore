@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+/.idea
+.gradle
+.vscode
+WeexSDK
+Servers
+TestDescrypt
+.metadata
+RemoteSystemsTempFiles
+.recommenders
+local.properties

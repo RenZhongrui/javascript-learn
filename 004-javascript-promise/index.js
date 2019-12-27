@@ -4,15 +4,29 @@
  * description:
  */
 let Promise = require('./promise');
-let promise = new Promise((resolve,reject) =>{
+let promise1 = new Promise((resolve,reject) =>{
     resolve("success");
 });
-promise.then(data => {
-    console.log(data);
+/*let promise2 = promise1.then(data => {
+    throw new Error("dd");
 });
-promise.then(data => {
+promise2.then(data => {
     console.log(data);
+}, error =>{
+    console.log("error:"+error)
+});*/
+
+let promise2 = promise1.then(data => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(new Promise((resolve, reject)=>{
+                resolve(9999)
+            }));
+        }, 1000);
+    });
 });
-promise.then(data => {
+promise2.then(data => {
     console.log(data);
+}, error =>{
+    console.log("error:"+error)
 });

@@ -22,4 +22,6 @@ function read2(url) {
 
 Promise.all([1, read2(file1), 3]).then(data => {
     console.log(data)
+},error => {
+    console.log(error)
 })

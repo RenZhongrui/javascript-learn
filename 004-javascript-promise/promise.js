@@ -42,7 +42,7 @@ class Promise {
             return reject(new TypeError('Chaining cycle detected for promise #<Promise>'));
         }
         // X是一个对象或者函数
-        if (typeof x === 'object' && x !==null || typeof x === 'function') {
+        if (typeof x === 'object' && x !== null || typeof x === 'function') {
             try {
                 let then = x.then; // 取then有可能会出错，then有可能是别的promise的或者不存在
                 if (typeof then === 'function') { // 认为then是一个函数，即x为promise
@@ -50,13 +50,13 @@ class Promise {
                         // resolve(y); // 如果x是一个promise，则将结果resolve，错误reject，传递给下一个then
                         // 如果y还是一个promise，则需要递归，直到解析出来是一个普通值
                         if (called) {
-                            return ;
+                            return;
                         }
                         called = true;
                         this.resolvePromise(y, promise2, resolve, reject);
                     }, r => {
                         if (called) {
-                            return ;
+                            return;
                         }
                         called = true;
                         reject(r);
@@ -64,9 +64,9 @@ class Promise {
                 } else {
                     resolve(x); // 说明x是一个普通对象，直接成功即可
                 }
-            }catch (e) {
+            } catch (e) {
                 if (called) {
-                    return ;
+                    return;
                 }
                 called = true;
                 reject(e);
@@ -80,8 +80,10 @@ class Promise {
 
     then(onFulfilled, onRejected) {
         // onFulfilled onRejected是可选参数，如p.then().then(()>{})
-        onFulfilled = typeof onFulfilled ==='function' ? onFulfilled : data => data;
-        onRejected = typeof onRejected ==='function' ? onRejected : error => {throw error};
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : data => data;
+        onRejected = typeof onRejected === 'function' ? onRejected : error => {
+            throw error
+        };
         // 2.1 为了then返回到下一个then传值,并链式调用，例如：
         /*  new Promise((resolve, reject) => {
 
@@ -96,11 +98,11 @@ class Promise {
                 // 2.4 这里会报错，先执行的是new Promise，然后才有了promise2对象，所以promise2直接传会是undefined，需要异步处理
                 setTimeout(() => {
                     // 2.4外部的try catch只能捕获同步异常，异步内需要加一个try catch‘
-                    try{
+                    try {
                         // 2.3
                         let x = onFulfilled(this.value);
                         this.resolvePromise(x, promise2, resolve, reject);
-                    }catch (e) {
+                    } catch (e) {
                         reject(e);
                     }
                 }, 0);
@@ -111,7 +113,7 @@ class Promise {
                     try {
                         let x = onRejected(this.reason);
                         this.resolvePromise(x, promise2, resolve, reject);
-                    }catch (e) {
+                    } catch (e) {
                         reject(e);
                     }
                 }, 0);
@@ -125,7 +127,7 @@ class Promise {
                         try {
                             let x = onFulfilled(this.value);
                             this.resolvePromise(x, promise2, resolve, reject);
-                        }catch (e) {
+                        } catch (e) {
                             reject(e);
                         }
                     }, 0);
@@ -136,7 +138,7 @@ class Promise {
                         try {
                             let x = onRejected(this.reason);
                             this.resolvePromise(x, promise2, resolve, reject);
-                        }catch (e) {
+                        } catch (e) {
                             reject(e);
                         }
                     }, 0);
@@ -146,10 +148,47 @@ class Promise {
         return promise2;
     }
 }
+
+function isPromise(value) {
+    if (typeof value === 'object' && value!==null || typeof value === 'function') {
+        if (typeof value.then === 'function') {
+            return true;
+        }
+    }
+    return false;
+}
+// 封装 Promise.all方法
+Promise.all = function (values) {
+    return new Promise((resolve, reject) => {
+        let result = []; // 存放返回值
+        let counter = 0; // 计数器，用于判断异步完成
+        function processData(key, value) {
+            result[key] = value;
+            // 每成功一次计数器就会加1，直到所有都成功的时候会与values长度一致，则认定为都成功了，所以能避免异步问题
+            if (++counter === values.length) {
+                resolve(result);
+            }
+        }
+        // 遍历 数组中的每一项，判断传入的是否是promise
+        for (let i = 0; i < values.length; i++) {
+            let current = values[i];
+            // 如果是promise则调用获取data值，然后再处理data
+            if (isPromise(current)) {
+                current.then(data => {
+                    processData(i, data);
+                }, reject);
+            } else {
+                // 如果不是promise，传入的是普通值，则直接返回
+                processData(i, current);
+            }
+        }
+    });
+}
+
 // 延迟对象，
-Promise.defer = Promise.deferred = function() {
+Promise.defer = Promise.deferred = function () {
     let dfd = {};
-    dfd.promise = new Promise((resolve, reject)=> {
+    dfd.promise = new Promise((resolve, reject) => {
         dfd.resolve = resolve;
         dfd.reject = reject;
     });

@@ -150,13 +150,14 @@ class Promise {
 }
 
 function isPromise(value) {
-    if (typeof value === 'object' && value!==null || typeof value === 'function') {
+    if (typeof value === 'object' && value !== null || typeof value === 'function') {
         if (typeof value.then === 'function') {
             return true;
         }
     }
     return false;
 }
+
 // 封装 Promise.all方法
 Promise.all = function (values) {
     return new Promise((resolve, reject) => {
@@ -169,6 +170,7 @@ Promise.all = function (values) {
                 resolve(result);
             }
         }
+
         // 遍历 数组中的每一项，判断传入的是否是promise
         for (let i = 0; i < values.length; i++) {
             let current = values[i];
@@ -184,6 +186,49 @@ Promise.all = function (values) {
         }
     });
 }
+
+/**
+ * resolve特点
+ * 入参是一个promise，则返回一个promise
+ * Promise.resolve调用的其实是new Promise
+ */
+Promise.resolve = function (value) {
+    if (value instanceof Promise) return value;
+    if (value === null) return null;
+    // 判断如果是promise
+    if (typeof value === 'object' || typeof value === 'function') {
+        try {
+            // 判断是否有then方法
+            let then = value.then;
+            if (typeof then === 'function') {
+                return new Promise(then.call(value)); // 执行value方法
+            }
+        } catch (e) {
+            return new Promise( (resolve, reject) =>{
+                reject(e);
+            });
+        }
+    }
+    return value;
+};
+
+/**
+ * finally特点
+ * 无论成功或失败，都会执行
+ * 入参是一个函数，这个函数在resolve和reject中都会调用
+ * 返回的是一个promise
+ * 使用Promise.resolve会等f()的函数执行完再返回结果
+ */
+Promise.prototype.finally = function (f) {
+    return this.then((value) => {
+        // Promise.resolve会等f()的函数执行完再返回结果
+        return Promise.resolve(f()).then(() => value);
+    }, (err) => {
+        return Promise.resolve(f()).then(() => {
+            throw err;
+        });
+    });
+};
 
 // 延迟对象，
 Promise.defer = Promise.deferred = function () {

@@ -218,9 +218,11 @@ Promise.resolve = function (value) {
  * 入参是一个函数，这个函数在resolve和reject中都会调用
  * 返回的是一个promise
  * 使用Promise.resolve会等f()的函数执行完再返回结果
+ * p.finally(() => {})本质是一个then方法
  */
 Promise.prototype.finally = function (f) {
     return this.then((value) => {
+        // f(); return value;
         // Promise.resolve会等f()的函数执行完再返回结果
         return Promise.resolve(f()).then(() => value);
     }, (err) => {

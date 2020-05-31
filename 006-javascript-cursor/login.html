@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<html>
+<head>
+    <title>load.html</title>
+</head>
+<script src="zepto.min.js"></script>
+<script type="text/javascript">
+var interv =null,intervs=[];
+var flag = false;
+function doHideAction(id) {
+	document.getElementById(id).value = passGuardManager.getText(id);
+	alert("键盘隐藏");
+}
+function doShowAction(id) {
+	document.getElementById(id).value = passGuardManager.getText(id);
+	alert("键盘弹出");
+}
+/* function addText(id, text) {
+	document.getElementById(id).value = text;
+} */
+function addText(id, text) {
+	document.getElementById(id).value = text;
+}
+$(function(){
+		$(document).on("touchstart",function(e){
+                if(e.target.className.indexOf("selpwd")){//selpwd 为输入框edit 的ID
+               
+            		for(var k=0;k<intervs.length;k++){
+
+	                     clearInterval(intervs[k]);
+	                   }
+            	}
+            
+        })
+
+	})
+
+
+//
+
+function showtag(id){
+	 interv=null;
+	for(var k=0;k<intervs.length;k++){
+
+	 clearInterval(intervs[k]);
+	}
+	
+	 intervs=[];
+	 
+     document.getElementById(id).blur();
+     var input1 = document.getElementById(id);
+    
+     interv = setInterval(function(){
+            if(flag){
+                 input1.value = input1.value.replace(/I/,"");
+                 flag = false;
+                
+            }else{
+                input1.value = input1.value + "I";
+                flag = true;
+                
+            }
+        }, 400);
+   
+   intervs.push(interv);
+  
+}
+function showKeyBoard(id) {
+	if (!passGuardManager.hasPassGuard(id)) {
+		passGuardManager.newPassGuard(id);
+     
+		passGuardManager.setCipherKey(id, "abcdefghijklmnopqrstuvwxyz777777");
+//		passGuardManager.setPublicKey1(id,"BgIAAACkAABSU0ExAAQAAAEAAQDj4NN05C+6YnOSrCspY2FNM8F19UN0Nk9SAcLobCmIjdri6avS+nYyNOsKkXk/Iy0rKzAFP/eu00Kg106TMfm7PGYEyuOhRmBR6A/NE5cbP8Go9/trgaVqbqD3fvm0TUywJ21Eq+BywH/gacEChSXeJWX/HdNsXCuGh3P7E6374A==");
+///		passGuardManager.setPublicKey2(id,"BgIAAACkAABSU0ExAAgAAAEAAQBJJc/EE+HtCJnmJVi0IRKSnqtcQou3ukDRv5bhef7E7jRM1Vo/PJj3jAlZTm3QCULWhHqFo1eesF+52oWP7vhaY1OUU0Emri3JX009txvQ4Rjx3bOxAuyClSRMp7cxCSlbbsHsNurOsieCkooZD4g+nuMnwKsh4AuHTPMleBYyj/bItgzUkRBygKyZz2i2IoUZ4NOM8031+V50IQqLw81D2uKJn6lRcd4jj7SVSQ3OPI9CQF+SYm43/KbR4e5eE1bkY6BtWTrOLn8gfrn+weJ3xhks7CYCI7HxcBBy294+aca3v7ebrSVhCoe/SXxGafEwYQ2Bm1CjWW6ufUGPX7au");
+		passGuardManager.setEccKey(id,"8236439FCD5924E4521C4ABFAAAEBD858C0B38E211F18E7F195A6BB431616664|119C4D46994C15695EC30166A3C39CDE55A3D57105E8EBEA2475E7EC353DB0AA");
+		passGuardManager.setTime(id,"1462955084729");
+		passGuardManager.EditTextAlwaysShow(id, false);
+		passGuardManager.setWebViewSyn(id, true);
+		passGuardManager.setMaxLength(id, 20);
+		passGuardManager.setWatchOutside(id, true);
+		passGuardManager.setReorder(id,2);
+		passGuardManager.initPassGuardKeyBoard(id);
+	}
+	passGuardManager.StartPassGuardKeyBoard(id);
+}
+
+
+function showKeyBoard1(id) {
+	if (!passGuardManager.hasPassGuard(id)) {
+		passGuardManager.newPassGuard(id);
+     
+		passGuardManager.setCipherKey(id, "abcdefghijklmnopqrstuvwxyz777777");
+//		passGuardManager.setPublicKey1(id,"BgIAAACkAABSU0ExAAQAAAEAAQDj4NN05C+6YnOSrCspY2FNM8F19UN0Nk9SAcLobCmIjdri6avS+nYyNOsKkXk/Iy0rKzAFP/eu00Kg106TMfm7PGYEyuOhRmBR6A/NE5cbP8Go9/trgaVqbqD3fvm0TUywJ21Eq+BywH/gacEChSXeJWX/HdNsXCuGh3P7E6374A==");
+///		passGuardManager.setPublicKey2(id,"BgIAAACkAABSU0ExAAgAAAEAAQBJJc/EE+HtCJnmJVi0IRKSnqtcQou3ukDRv5bhef7E7jRM1Vo/PJj3jAlZTm3QCULWhHqFo1eesF+52oWP7vhaY1OUU0Emri3JX009txvQ4Rjx3bOxAuyClSRMp7cxCSlbbsHsNurOsieCkooZD4g+nuMnwKsh4AuHTPMleBYyj/bItgzUkRBygKyZz2i2IoUZ4NOM8031+V50IQqLw81D2uKJn6lRcd4jj7SVSQ3OPI9CQF+SYm43/KbR4e5eE1bkY6BtWTrOLn8gfrn+weJ3xhks7CYCI7HxcBBy294+aca3v7ebrSVhCoe/SXxGafEwYQ2Bm1CjWW6ufUGPX7au");
+		passGuardManager.setEccKey(id,"8236439FCD5924E4521C4ABFAAAEBD858C0B38E211F18E7F195A6BB431616664|119C4D46994C15695EC30166A3C39CDE55A3D57105E8EBEA2475E7EC353DB0AA");
+		passGuardManager.setTime(id,"1462955084729");
+		passGuardManager.EditTextAlwaysShow(id, false);
+		passGuardManager.setWebViewSyn(id, true);
+		passGuardManager.setMaxLength(id, 20);
+		passGuardManager.setInputRegex(id,"[a-zA-Z]{1,20}");
+		passGuardManager.setWatchOutside(id, true);
+//		passGuardManager.setReorder(id,2);
+		passGuardManager.initPassGuardKeyBoard(id);
+	}
+	passGuardManager.StartPassGuardKeyBoard(id);
+}
+function showKeyBoard2(id) {
+	if (!passGuardManager.hasPassGuard(id)) {
+		passGuardManager.newPassGuard(id);
+     
+		passGuardManager.setCipherKey(id, "abcdefghijklmnopqrstuvwxyz777777");
+//		passGuardManager.setPublicKey1(id,"BgIAAACkAABSU0ExAAQAAAEAAQDj4NN05C+6YnOSrCspY2FNM8F19UN0Nk9SAcLobCmIjdri6avS+nYyNOsKkXk/Iy0rKzAFP/eu00Kg106TMfm7PGYEyuOhRmBR6A/NE5cbP8Go9/trgaVqbqD3fvm0TUywJ21Eq+BywH/gacEChSXeJWX/HdNsXCuGh3P7E6374A==");
+///		passGuardManager.setPublicKey2(id,"BgIAAACkAABSU0ExAAgAAAEAAQBJJc/EE+HtCJnmJVi0IRKSnqtcQou3ukDRv5bhef7E7jRM1Vo/PJj3jAlZTm3QCULWhHqFo1eesF+52oWP7vhaY1OUU0Emri3JX009txvQ4Rjx3bOxAuyClSRMp7cxCSlbbsHsNurOsieCkooZD4g+nuMnwKsh4AuHTPMleBYyj/bItgzUkRBygKyZz2i2IoUZ4NOM8031+V50IQqLw81D2uKJn6lRcd4jj7SVSQ3OPI9CQF+SYm43/KbR4e5eE1bkY6BtWTrOLn8gfrn+weJ3xhks7CYCI7HxcBBy294+aca3v7ebrSVhCoe/SXxGafEwYQ2Bm1CjWW6ufUGPX7au");
+		passGuardManager.setEccKey(id,"8236439FCD5924E4521C4ABFAAAEBD858C0B38E211F18E7F195A6BB431616664|119C4D46994C15695EC30166A3C39CDE55A3D57105E8EBEA2475E7EC353DB0AA");
+		passGuardManager.setTime(id,"1462955084729");
+		passGuardManager.EditTextAlwaysShow(id, false);
+		passGuardManager.setWebViewSyn(id, true);
+		passGuardManager.setMaxLength(id, 20);
+		passGuardManager.setInputRegex(id,"[a-zA-Z0-9]{1,20}");
+		passGuardManager.setWatchOutside(id, true);
+//		passGuardManager.setReorder(id,2);
+		passGuardManager.initPassGuardKeyBoard(id);
+	}
+	passGuardManager.StartPassGuardKeyBoard(id);
+}
+function showKeyBoard3(id) {
+	if (!passGuardManager.hasPassGuard(id)) {
+		passGuardManager.newPassGuard(id);
+     
+		passGuardManager.setCipherKey(id, "abcdefghijklmnopqrstuvwxyz777777");
+//		passGuardManager.setPublicKey1(id,"BgIAAACkAABSU0ExAAQAAAEAAQDj4NN05C+6YnOSrCspY2FNM8F19UN0Nk9SAcLobCmIjdri6avS+nYyNOsKkXk/Iy0rKzAFP/eu00Kg106TMfm7PGYEyuOhRmBR6A/NE5cbP8Go9/trgaVqbqD3fvm0TUywJ21Eq+BywH/gacEChSXeJWX/HdNsXCuGh3P7E6374A==");
+///		passGuardManager.setPublicKey2(id,"BgIAAACkAABSU0ExAAgAAAEAAQBJJc/EE+HtCJnmJVi0IRKSnqtcQou3ukDRv5bhef7E7jRM1Vo/PJj3jAlZTm3QCULWhHqFo1eesF+52oWP7vhaY1OUU0Emri3JX009txvQ4Rjx3bOxAuyClSRMp7cxCSlbbsHsNurOsieCkooZD4g+nuMnwKsh4AuHTPMleBYyj/bItgzUkRBygKyZz2i2IoUZ4NOM8031+V50IQqLw81D2uKJn6lRcd4jj7SVSQ3OPI9CQF+SYm43/KbR4e5eE1bkY6BtWTrOLn8gfrn+weJ3xhks7CYCI7HxcBBy294+aca3v7ebrSVhCoe/SXxGafEwYQ2Bm1CjWW6ufUGPX7au");
+		passGuardManager.setEccKey(id,"8236439FCD5924E4521C4ABFAAAEBD858C0B38E211F18E7F195A6BB431616664|119C4D46994C15695EC30166A3C39CDE55A3D57105E8EBEA2475E7EC353DB0AA");
+		passGuardManager.setTime(id,"1462955084729");
+		passGuardManager.EditTextAlwaysShow(id, false);
+		passGuardManager.setWebViewSyn(id, true);
+		passGuardManager.setMaxLength(id, 20);
+		passGuardManager.setWatchOutside(id, true);
+//		passGuardManager.setReorder(id,2);
+		passGuardManager.initPassGuardKeyBoard(id);
+	}
+	passGuardManager.StartPassGuardKeyBoard(id);
+}
+function submit() {
+	document.getElementById("output").innerHTML = "Cipher&#x5BC6;&#x6587;&#xFF1A;" + passGuardManager.getOutput1('selpwd') + "<br>sm2+sm4&#x5BC6;&#x6587;&#xFF1A;"+ passGuardManager.getSM2SM4Ciphertext('selpwd')+"<br>MD5&#x503C;&#xFF1A;" + passGuardManager.getMD5('selpwd') + "<br>&#x5BC6;&#x7801;&#x957F;&#x5EA6;&#xFF1A;" + passGuardManager.getLength('selpwd')+"<br>&#x5F3A;&#x5F31;&#x5BC6;&#x7801;"+ passGuardManager.isWeakPassword('selpwd',passGuardManager.weakPasswordRule('selpwd')); 
+//	window.location.href="login2.html"
+
+}
+function submit1() {
+	document.getElementById("output").innerHTML = "Cipher&#x5BC6;&#x6587;&#xFF1A;" + passGuardManager.getOutput1('selpwd1') + "<br>sm2+sm4&#x5BC6;&#x6587;&#xFF1A;"+ passGuardManager.getSM2SM4Ciphertext('selpwd1')+ "<br>MD5&#x503C;&#xFF1A;" + passGuardManager.getMD5('selpwd1') + "<br>&#x5BC6;&#x7801;&#x957F;&#x5EA6;&#xFF1A;" + passGuardManager.getLength('selpwd1')+"<br>&#x5F3A;&#x5F31;&#x5BC6;&#x7801;"+ passGuardManager.isWeakPassword('selpwd1',passGuardManager.weakPasswordRule('selpwd1')); 
+//	window.location.href="login2.html"
+
+}
+function submit2() {
+	document.getElementById("output").innerHTML = "Cipher&#x5BC6;&#x6587;&#xFF1A;" + passGuardManager.getOutput1('selpwd2') + "<br>sm2+sm4&#x5BC6;&#x6587;&#xFF1A;"+ passGuardManager.getSM2SM4Ciphertext('selpwd2')+ "<br>MD5&#x503C;&#xFF1A;" + passGuardManager.getMD5('selpwd2') + "<br>&#x5BC6;&#x7801;&#x957F;&#x5EA6;&#xFF1A;" + passGuardManager.getLength('selpwd2')+"<br>&#x5F3A;&#x5F31;&#x5BC6;&#x7801;"+ passGuardManager.isWeakPassword('selpwd2',passGuardManager.weakPasswordRule('selpwd2')); 
+//	window.location.href="login2.html"
+
+}
+function submit3() {
+	document.getElementById("output").innerHTML = "Cipher&#x5BC6;&#x6587;&#xFF1A;" + passGuardManager.getOutput1('selpwd3') + "<br>sm2+sm4&#x5BC6;&#x6587;&#xFF1A;"+ passGuardManager.getSM2SM4Ciphertext('selpwd3')+ "<br>MD5&#x503C;&#xFF1A;" + passGuardManager.getMD5('selpwd3') + "<br>&#x5BC6;&#x7801;&#x957F;&#x5EA6;&#xFF1A;" + passGuardManager.getLength('selpwd3')+"<br>&#x5F3A;&#x5F31;&#x5BC6;&#x7801;"+ passGuardManager.isWeakPassword('selpwd3',passGuardManager.weakPasswordRule('selpwd3'))+"<br>&#x660E;&#x6587;&#x4E3A;&#xFF1A;"+passGuardManager.getPlain("selpwd3"); 
+//	window.location.href="login2.html"
+
+}
+
+</script>
+<body></br></br>
+   <table border="0" align="center" cellpadding="0" cellspacing="0">
+	 </br></br>
+      <tr>
+      	<td>&#x5B89;&#x5168;&#x8F93;&#x5165;&#xFF1A;</td><td><input type="text" name="selpwd" id="selpwd"  onfocus="showtag('selpwd');" onclick="showKeyBoard('selpwd')" value=""/></td><td></td>
+     </tr>
+     </tr>
+     </br></br>
+     <tr >
+     </tr>
+	 <tr>
+	 	<td></td><td align="center"><input type="button" value="&#x5B57;&#x6BCD;+&#x5B57;&#x7B26;+&#x6570;&#x5B57;" onclick="submit()" /></td><td></td>
+	 </tr>
+	  <tr>
+      	<td>&#x5B89;&#x5168;&#x8F93;&#x5165;&#xFF1A;</td><td><input type="text" name="selpwd1" id="selpwd1"  onfocus="blur()" onclick="showKeyBoard1('selpwd1')" value=""/></td><td></td>
+     </tr>
+      <tr>
+	 	<td></td><td align="center"><input type="button" value="&#x7EAF;&#x5B57;&#x6BCD;" onclick="submit1()" /></td><td></td>
+	 </tr>
+	  <tr>
+      	<td>&#x5B89;&#x5168;&#x8F93;&#x5165;&#xFF1A;</td><td><input type="text" name="selpwd2" id="selpwd2"  onfocus="blur()" onclick="showKeyBoard2('selpwd2')" value=""/></td><td></td>
+     </tr>
+      <tr>
+	 	<td></td><td align="center"><input type="button" value="&#x5B57;&#x6BCD;+&#x6570;&#x5B57;" onclick="submit2()" /></td><td></td>
+	 </tr>
+	   <tr>
+      	<td>&#x5B89;&#x5168;&#x8F93;&#x5165;&#xFF1A;</td><td><input type="text" name="selpwd3" id="selpwd3"  onfocus="blur()" onclick="showKeyBoard3('selpwd3')" value=""/></td><td></td>
+     </tr>
+      <tr>
+	 	<td></td><td align="center"><input type="button" value="&#x660E;&#x6587;&#x8F93;&#x5165;&#x6846;" onclick="submit3()" /></td><td></td>
+	 </tr>
+	 <div id="output" />
+   </table>
+</body>
+</html>

@@ -13,7 +13,10 @@ class Teacher extends Person{
     getTeacherName() {
         return "teacher";
     }
+    getName(): string {
+        return super.getName()+"ddd";
+    }
 }
 let t = new Teacher();
-t.getName();
-t.getTeacherName();
+console.log(t.getName());
+console.log(t.getTeacherName());
